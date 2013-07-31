@@ -29,7 +29,6 @@ var app = {
           // Response handlers.
           xhr.onload = function () {
              var repos = JSON.parse(xhr.response), i, reposHTML = "";
-             debugger;
              for (i = 0; i < repos.repositories.length; i++) {
                 reposHTML += "<p><a href='https://github.com/" + repos.repositories[i].username + "/" + repos.repositories[i].name + "'>" + repos.repositories[i].name + "</a><br>" + repos.repositories[i].description + "</p>";
              }
