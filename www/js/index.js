@@ -21,6 +21,7 @@ var app = {
         this.bind();
     },
     bind: function() {
+        document.getElementById("allRepos").innerHTML="waiting for device ready";
         document.addEventListener('deviceready', this.deviceready, false);
     },
     deviceready: function() {
