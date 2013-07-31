@@ -21,10 +21,13 @@ var app = {
         this.bind();
     },
     bind: function() {
-        document.getElementById("allRepos").innerHTML="waiting for device ready";
+        document.getElementById("allRepos").innerHTML="waiting for device ready<br>";
         document.addEventListener('deviceready', this.deviceready, false);
     },
     deviceready: function() {
+        
+        document.getElementById("allRepos").innerHTML = 
+            document.getElementById("allRepos").innerHTML + "device is ready, now do http request"; 
         var xhr = new XMLHttpRequest();
          xhr.open('GET', 'https://api.github.com/legacy/repos/search/css', true);
           // Response handlers.
@@ -33,7 +36,8 @@ var app = {
              for (i = 0; i < repos.repositories.length; i++) {
                 reposHTML += "<p><a href='https://github.com/" + repos.repositories[i].username + "/" + repos.repositories[i].name + "'>" + repos.repositories[i].name + "</a><br>" + repos.repositories[i].description + "</p>";
              }
-             document.getElementById("allRepos").innerHTML = reposHTML;
+             document.getElementById("allRepos").innerHTML = 
+            document.getElementById("allRepos").innerHTML + reposHTML;
           };
            
           xhr.onerror = function () {
