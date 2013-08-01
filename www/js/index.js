@@ -57,12 +57,47 @@ function txSuccessCheckFave(tx,results) {
         disableSaveButton();
 }
 
+function alertDismissed() {
+    $.mobile.changePage("index.html");
+}
+
 function disableSaveButton() {
     // change the button text and style
     var ctx = $("#saveBtn").closest(".ui-btn");
     $('span.ui-btn-text',ctx).text("Saved").closest(".ui-btn-inner").addClass("ui-btn-up-b");
     
     $("#saveBtn").unbind("click", saveFave);
+}
+
+$('#favesHome').live('pageshow', function(event) {
+    db.transaction(loadFavesDb, txError, txSuccess);
+});
+
+function loadFavesDb(tx) {
+    tx.executeSql("SELECT * FROM repos",[],txSuccessLoadFaves);
+}
+
+function txSuccessLoadFaves(tx,results) {
+    console.log("Read success");
+    
+    if (results.rows.length) {
+        var len = results.rows.length;
+        var repo;
+        for (var i=0; i < len; i = i + 1) {
+            repo = results.rows.item(i);
+            console.log(repo);
+            $("#savedItems").append("<li><a href='repo-detail.html?owner=" + repo.user + "&name=" + repo.name + "'>"
+            + "<h4>" + repo.name + "</h4>"
+            + "<p>" + repo.user + "</p></a></li>");
+        };
+        $('#savedItems').listview('refresh');
+    }
+    else {
+        if (navigator.notification)
+            navigator.notification.alert("You haven't saved any favorites yet.", alertDismissed);
+        else
+            alert("You haven't saved any favorites yet.");
+    }
 }
 
 function loadRepos() {
